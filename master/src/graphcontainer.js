@@ -6,13 +6,19 @@ const GraphContainer = ({ area }) => {
   return (
     <div className="graph-container">
       <div className="graph">
-        <LineChart />
+        <LineChart>
+          temp2
+        </LineChart>
       </div>
       <div className="graph">
-        <LineChart />
+        <LineChart>
+          hum2
+        </LineChart>
       </div>
       <div className="graph">
-        <LineChart />
+        <LineChart>
+          gas2
+        </LineChart>
       </div>
     </div>
   );

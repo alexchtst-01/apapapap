@@ -23,17 +23,17 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = () => {
+const LineChart = ({ children }) => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [labels, setLabels] = useState([]);
   const [time, setTime] = useState(0);
 
+  const conn = `/ThinkIOT/${children}`;
   useEffect(() => {
     const client = mqtt.connect("wss://test.mosquitto.org:8081");
-
     client.on("connect", () => {
       console.log("Connected to Mosquitto broker");
-      client.subscribe("/ThinkIOT/temp2", (err) => {
+      client.subscribe(conn, (err) => {
         if (err) {
           console.error("Subscription error:", err);
         }
@@ -42,10 +42,10 @@ const LineChart = () => {
 
     client.on("message", (topic, message) => {
       const data = JSON.parse(message.toString());
-      if (topic === "/ThinkIOT/temp2") {
+      if (topic === conn) {
         setTemperatureData((prevData) => {
           const newData = [...prevData, data.Temp];
-          if (newData.length > 7) {
+          if (newData.length > 25) {
             newData.shift();
           }
           return newData;
@@ -74,10 +74,14 @@ const LineChart = () => {
     labels: labels,
     datasets: [
       {
-        label: "Temperature (°C)",
+        label: conn.includes("temp")
+          ? "Temperature (°C)"
+          : conn.includes("hum")
+          ? "Humidity"
+          : "Gas",
         data: temperatureData,
-        fill: false,
-        // borderColor: "rgba(75,192,192,1)",
+        fill: true,
+        borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
         tension: 0.4,
       },
