@@ -1,4 +1,3 @@
-// Import dependencies
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -44,16 +43,16 @@ export const postData = async (req, res) => {
 };
 
 const app = express();
-app.use(cors(
-  {origin: "*"}
-));
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 const router = express.Router();
 
-router.get("/", () => {
-    res.send("hallo from backend")
-})
+router.get("/", (req, res) => {
+  res.send("Hello from backend");
+});
+
+app.use("/", router);
 
 router.post("/data", postData);
 
@@ -66,8 +65,8 @@ const connectDB = async () => {
       useUnifiedTopology: true,
     });
     console.log("Connected to MongoDB Atlas");
-    app.listen(process.env.PORT, () => {
-      console.log(`Server running on port ${process.env.PORT}`);
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);

@@ -1,17 +1,18 @@
-import React from 'react';
+import React from "react";
+import LineChart from "./lineplot";
 
 const GraphContainer = ({ area }) => {
   // Placeholder for dynamic graphs
   return (
     <div className="graph-container">
       <div className="graph">
-        <p>{`Temperature graph for ${area}`}</p>
+        <LineChart />
       </div>
       <div className="graph">
-        <p>{`Humidity graph for ${area}`}</p>
+        <LineChart />
       </div>
       <div className="graph">
-        <p>{`Gas level graph for ${area}`}</p>
+        <LineChart />
       </div>
     </div>
   );

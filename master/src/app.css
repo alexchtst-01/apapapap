@@ -56,15 +56,17 @@
 .graph-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .graph {
-  height: 100px;
-  background-color: #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 30%;
+  /* margin: 0px; */
+  /* background-color: #e0e0e0; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* flex-direction: column; */
 }
 
 .warning-log {

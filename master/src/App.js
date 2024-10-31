@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import Dropdown from './dropdown';
-import GraphContainer from './graphcontainer';
-import CameraView from './cameraview';
-import SegmentedButton from './segmentedbutton';
-import WarningLog from './warninglog';
-import './app.css';
+import React, { useState } from "react";
+import Dropdown from "./dropdown";
+import GraphContainer from "./graphcontainer";
+import CameraView from "./cameraview";
+import SegmentedButton from "./segmentedbutton";
+import WarningLog from "./warninglog";
+import "./app.css";
+import LineChart from "./lineplot";
 
 const App = () => {
-  const [selectedArea, setSelectedArea] = useState('Area X');
-  const [selectedCondition, setSelectedCondition] = useState('Temperature');
-  const [warning, setWarning] = useState('');
+  const [selectedArea, setSelectedArea] = useState("Area X");
+  const [selectedCondition, setSelectedCondition] = useState("Temperature");
+  const [warning, setWarning] = useState("");
 
   // Handler for area selection
   const handleAreaChange = (area) => {
@@ -37,6 +38,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
