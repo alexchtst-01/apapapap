@@ -25,6 +25,8 @@ ChartJS.register(
 
 const LineChart = ({ children }) => {
   const [temperatureData, setTemperatureData] = useState([]);
+  const [humidityData, setHumidityData] = useState([]);
+  const [gasData, setGasData] = useState([]);
   const [labels, setLabels] = useState([]);
   const [time, setTime] = useState(0);
 
@@ -44,12 +46,26 @@ const LineChart = ({ children }) => {
       const data = JSON.parse(message.toString());
       if (topic === conn) {
         setTemperatureData((prevData) => {
-          const newData = [...prevData, data.Temp];
-          if (newData.length > 25) {
-            newData.shift();
+          const newDataTemp = [...prevData, data.Temp];
+          if (newDataTemp.length > 25) {
+            newDataTemp.shift();
           }
-          return newData;
+          return newDataTemp;
         });
+        setHumidityData((prevData) => {
+          const newDataHum = [...prevData, data.Hum];
+          if (newDataHum.length > 25) {
+            newDataHum.shift();
+          }
+          return newDataHum
+        })
+        setGasData((prevData) => {
+          const newDataGas = [...prevData, data.Gas];
+          if (newDataGas.length > 25) {
+            newDataGas.shift();
+          }
+          return newDataGas
+        })
 
         setLabels((prevLabels) => {
           const newLabels = [...prevLabels, ` ${time}`];
@@ -79,7 +95,11 @@ const LineChart = ({ children }) => {
           : conn.includes("hum")
           ? "Humidity"
           : "Gas",
-        data: temperatureData,
+        data: conn.includes("temp")
+          ? temperatureData
+          : conn.includes("hum")
+          ? humidityData
+          : gasData,
         fill: true,
         borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
