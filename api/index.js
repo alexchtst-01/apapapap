@@ -31,7 +31,7 @@ const dataResult = new mongoose.Schema(
 
 const Data = mongoose.model("data", dataResult);
 
-export const postData = async (req, res) => {
+const postData = async (req, res) => {
   const { humidity, temp, gas, device } = req.body;
   try {
     const newData = new Data({ humidity, temp, gas, device });
