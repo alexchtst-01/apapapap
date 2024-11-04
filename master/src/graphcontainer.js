@@ -5,7 +5,7 @@ const GraphContainer = ({ area }) => {
   // Placeholder for dynamic graphs
   return (
     <div className="graph-container">
-      <LineChart />
+      <LineChart area={area}/>
     </div>
   );
 };

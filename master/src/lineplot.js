@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = () => {
+const LineChart = ({area}) => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
   const [gasData, setGasData] = useState([]);
@@ -48,31 +48,31 @@ const LineChart = () => {
       console.log(data);
       if (topic === conn) {
         if (data.Temp) {
-          setTemperatureData((prevData) => {
-            const newDataTemp = [...prevData, data.Temp];
-            if (newDataTemp.length > 25) {
-              newDataTemp.shift();
-            }
-            return newDataTemp;
-          });
+        setTemperatureData((prevData) => {
+          const newDataTemp = [...prevData, data.Temp];
+          if (newDataTemp.length > 25) {
+            newDataTemp.shift();
+          }
+          return newDataTemp;
+        });
         }
         if (data.Hum) {
-          setHumidityData((prevData) => {
-            const newDataHum = [...prevData, data.Hum];
-            if (newDataHum.length > 25) {
-              newDataHum.shift();
-            }
-            return newDataHum;
-          });
+        setHumidityData((prevData) => {
+          const newDataHum = [...prevData, data.Hum];
+          if (newDataHum.length > 25) {
+            newDataHum.shift();
+          }
+          return newDataHum;
+        });
         }
         if (data.Gas) {
-          setGasData((prevData) => {
-            const newDataGas = [...prevData, data.Gas];
-            if (newDataGas.length > 25) {
-              newDataGas.shift();
-            }
-            return newDataGas;
-          });
+        setGasData((prevData) => {
+          const newDataGas = [...prevData, data.Gas];
+          if (newDataGas.length > 25) {
+            newDataGas.shift();
+          }
+          return newDataGas;
+        });
         }
 
         console.log(`temp: ${data.Temp}`);
@@ -203,7 +203,7 @@ const LineChart = () => {
   return (
     <div className="graph-container">
       <div className="graph">
-        <div style={{ background: "black" }}>
+    <div style={{ background: "black" }}>
           <Line data={dataTemp} options={options} />
         </div>
       </div>
