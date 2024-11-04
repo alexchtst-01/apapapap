@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = () => {
+const LineChart = ({area}) => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
   const [gasData, setGasData] = useState([]);
