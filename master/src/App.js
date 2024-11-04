@@ -5,7 +5,9 @@ import CameraView from "./cameraview";
 import SegmentedButton from "./segmentedbutton";
 import WarningLog from "./warninglog";
 import "./app.css";
-import LineChart from "./lineplot";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 const App = () => {
   const [selectedArea, setSelectedArea] = useState("Area X");

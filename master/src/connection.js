@@ -2,9 +2,10 @@ import axios from "axios";
 import env from "react-dotenv";
 
 const END_POINT = env.LOCAL_ENDPOINT || env.HOSTED_ENDPOINT;
-
+axios.defaults.withCredentials = true;
 export const postData = async (data) => {
   console.log(data);
+  console.log(END_POINT);
   try {
     const response = await axios.post(
       `${END_POINT}/data`,
@@ -13,6 +14,7 @@ export const postData = async (data) => {
         temp:data.temp,
         gas:data.gas,
         device:data.device,
+        region: data.region,
       },
       {
         headers: {

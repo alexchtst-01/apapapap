@@ -24,14 +24,14 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({ children }) => {
+const LineChart = () => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
   const [gasData, setGasData] = useState([]);
   const [labels, setLabels] = useState([]);
   const [time, setTime] = useState(0);
 
-  const conn = `/ThinkIOT/${children}`;
+  const conn = `/ThinkIOT/data`;
   useEffect(() => {
     const client = mqtt.connect("wss://test.mosquitto.org:8081");
     client.on("connect", () => {
@@ -45,28 +45,39 @@ const LineChart = ({ children }) => {
 
     client.on("message", (topic, message) => {
       const data = JSON.parse(message.toString());
+      console.log(data);
       if (topic === conn) {
-        setTemperatureData((prevData) => {
-          const newDataTemp = [...prevData, data.Temp];
-          if (newDataTemp.length > 25) {
-            newDataTemp.shift();
-          }
-          return newDataTemp;
-        });
-        setHumidityData((prevData) => {
-          const newDataHum = [...prevData, data.Hum];
-          if (newDataHum.length > 25) {
-            newDataHum.shift();
-          }
-          return newDataHum;
-        });
-        setGasData((prevData) => {
-          const newDataGas = [...prevData, data.Gas];
-          if (newDataGas.length > 25) {
-            newDataGas.shift();
-          }
-          return newDataGas;
-        });
+        if (data.Temp) {
+          setTemperatureData((prevData) => {
+            const newDataTemp = [...prevData, data.Temp];
+            if (newDataTemp.length > 25) {
+              newDataTemp.shift();
+            }
+            return newDataTemp;
+          });
+        }
+        if (data.Hum) {
+          setHumidityData((prevData) => {
+            const newDataHum = [...prevData, data.Hum];
+            if (newDataHum.length > 25) {
+              newDataHum.shift();
+            }
+            return newDataHum;
+          });
+        }
+        if (data.Gas) {
+          setGasData((prevData) => {
+            const newDataGas = [...prevData, data.Gas];
+            if (newDataGas.length > 25) {
+              newDataGas.shift();
+            }
+            return newDataGas;
+          });
+        }
+
+        console.log(`temp: ${data.Temp}`);
+        console.log(`hum: ${data.Hum}`);
+        console.log(`gas: ${data.Gas}`);
 
         setLabels((prevLabels) => {
           const newLabels = [...prevLabels, ` ${time}`];
@@ -77,22 +88,15 @@ const LineChart = ({ children }) => {
         });
 
         postData({
-          humi: newDataHum[-1],
-          temp: newDataTemp[-1],
-          gas: newDataGas[-1],
-          device: 1,
+          humi: data.Hum,
+          temp: data.Temp,
+          gas: data.Gas,
+          device: 2,
+          region: "Area X",
         });
         setTime((prevTime) => prevTime + 1);
       }
     });
-
-    // kedetect ko ini pak
-    // postData({
-    //   humi: 12.20,
-    //   temp: 30.0,
-    //   gas: 10.0,
-    //   device: 1,
-    // });
 
     // Clean up connection on unmount
     return () => {
@@ -102,20 +106,12 @@ const LineChart = ({ children }) => {
     };
   }, [time]);
 
-  const data = {
+  const dataTemp = {
     labels: labels,
     datasets: [
       {
-        label: conn.includes("temp")
-          ? "Temperature (°C)"
-          : conn.includes("hum")
-          ? "Humidity"
-          : "Gas",
-        data: conn.includes("temp")
-          ? temperatureData
-          : conn.includes("hum")
-          ? humidityData
-          : gasData,
+        label: "Temperature (°C)",
+        data: temperatureData,
         fill: true,
         borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
@@ -123,6 +119,35 @@ const LineChart = ({ children }) => {
       },
     ],
   };
+
+  const dataHum = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Humidity (%)",
+        data: humidityData,
+        fill: true,
+        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "rgba(75,192,192,0.2)",
+        tension: 0.4,
+      },
+    ],
+  };
+  
+  const dataGas = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Gas",
+        data: gasData,
+        fill: true,
+        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "rgba(75,192,192,0.2)",
+        tension: 0.4,
+      },
+    ],
+  };
+
   const options = {
     responsive: true,
     plugins: {
@@ -136,7 +161,7 @@ const LineChart = ({ children }) => {
       },
       title: {
         display: false,
-        text: "Temperature Data Over Time",
+        text: "",
         font: {
           size: 12, // Change this value to set title font size
         },
@@ -147,7 +172,7 @@ const LineChart = ({ children }) => {
         beginAtZero: true,
         title: {
           display: false,
-          text: "Temperature (°C)",
+          text: "",
           font: {
             size: 5,
           },
@@ -176,8 +201,22 @@ const LineChart = ({ children }) => {
   };
 
   return (
-    <div style={{ background: "black" }}>
-      <Line data={data} options={options} />
+    <div>
+      <div className="graph">
+        <div style={{ background: "black" }}>
+          <Line data={dataTemp} options={options} />
+        </div>
+      </div>
+      <div className="graph">
+        <div style={{ background: "black" }}>
+          <Line data={dataHum} options={options} />
+        </div>
+      </div>
+      <div className="graph">
+        <div style={{ background: "black" }}>
+          <Line data={dataGas} options={options} />
+        </div>
+      </div>
     </div>
   );
 };
