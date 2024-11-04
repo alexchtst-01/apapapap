@@ -6,6 +6,8 @@ import SegmentedButton from "./segmentedbutton";
 import WarningLog from "./warninglog";
 import "./app.css";
 import axios from "axios";
+import GraphContainer2 from "./graphcontainer2";
+import GraphContainer3 from "./graphcontainer3";
 
 axios.defaults.withCredentials = true;
 
@@ -28,11 +30,23 @@ const App = () => {
     <div className="app-container">
       <div className="left-column">
         <Dropdown selectedArea={selectedArea} onAreaChange={handleAreaChange} />
-        <GraphContainer area={selectedArea}/>
+        <div className={`${selectedArea !== "AreaX" ? "hidden" : ""}`}>
+          <GraphContainer />
+        </div>
+        <div className={`${selectedArea !== "AreaY" ? "hidden" : ""}`}>
+          <GraphContainer2 />
+        </div>{" "}
+        <div className={`${selectedArea !== "AreaZ" ? "hidden" : ""}`}>
+          <GraphContainer3 />
+        </div>
+        {/* {selectedArea} */}
       </div>
       <div className="right-column">
         <CameraView />
-        <SegmentedButton selectedCondition={selectedCondition} onConditionChange={handleConditionChange} />
+        <SegmentedButton
+          selectedCondition={selectedCondition}
+          onConditionChange={handleConditionChange}
+        />
         <WarningLog warning={warning} />
       </div>
     </div>

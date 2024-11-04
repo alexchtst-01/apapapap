@@ -1,11 +1,10 @@
 import React from "react";
 import LineChart from "./lineplot";
 
-const GraphContainer = ({ area }) => {
-  // Placeholder for dynamic graphs
+const GraphContainer2 = () => {
   return (
     <div>
-      <LineChart area={area} />
+      <LineChart area={'AreaY'} />
     </div>
   );
 };

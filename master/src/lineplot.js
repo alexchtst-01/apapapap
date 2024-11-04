@@ -102,7 +102,7 @@ const LineChart = ({area}) => {
     // Clean up connection on unmount
     return () => {
       if (client) {
-        client.unsubscribe(conn);
+        // client.unsubscribe(conn);
         client.end();
       }
     };

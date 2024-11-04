@@ -90,3 +90,9 @@
     flex-direction: column; /* Ubah jadi vertikal pada layar kecil */
   }
 }
+
+
+.hidden{
+  display: none;
+  visibility: hidden;
+}
