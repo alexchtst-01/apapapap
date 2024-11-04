@@ -31,7 +31,8 @@ const LineChart = ({area}) => {
   const [labels, setLabels] = useState([]);
   const [time, setTime] = useState(0);
 
-  const conn = `/ThinkIOT/data`;
+  const conn = `/ThinkIOT/data/${area}`;
+  console.log(area)
   useEffect(() => {
     const client = mqtt.connect("wss://test.mosquitto.org:8081");
     client.on("connect", () => {
@@ -92,7 +93,7 @@ const LineChart = ({area}) => {
           temp: data.Temp,
           gas: data.Gas,
           device: 2,
-          region: "Area X",
+          region: area,
         });
         setTime((prevTime) => prevTime + 1);
       }
@@ -101,10 +102,11 @@ const LineChart = ({area}) => {
     // Clean up connection on unmount
     return () => {
       if (client) {
+        client.unsubscribe(conn);
         client.end();
       }
     };
-  }, [time]);
+  }, [area, time]);
 
   const dataTemp = {
     labels: labels,

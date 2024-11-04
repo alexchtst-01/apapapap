@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Dropdown = ({ selectedArea, onAreaChange }) => {
-  const areas = ['Area X', 'Area Y', 'Area Z'];
+  const areas = ['AreaX', 'AreaY', 'AreaZ'];
 
   return (
     <select value={selectedArea} onChange={(e) => onAreaChange(e.target.value)}>

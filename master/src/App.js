@@ -10,7 +10,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const App = () => {
-  const [selectedArea, setSelectedArea] = useState("Area X");
+  const [selectedArea, setSelectedArea] = useState("AreaX");
   const [selectedCondition, setSelectedCondition] = useState("Temperature");
   const [warning, setWarning] = useState("");
 
@@ -28,7 +28,7 @@ const App = () => {
     <div className="app-container">
       <div className="left-column">
         <Dropdown selectedArea={selectedArea} onAreaChange={handleAreaChange} />
-        <GraphContainer area={selectedArea} />
+        <GraphContainer area={selectedArea}/>
       </div>
       <div className="right-column">
         <CameraView />
