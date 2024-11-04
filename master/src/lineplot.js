@@ -133,7 +133,7 @@ const LineChart = () => {
       },
     ],
   };
-  
+
   const dataGas = {
     labels: labels,
     datasets: [
@@ -201,7 +201,7 @@ const LineChart = () => {
   };
 
   return (
-    <div>
+    <div className="graph-container">
       <div className="graph">
         <div style={{ background: "black" }}>
           <Line data={dataTemp} options={options} />
