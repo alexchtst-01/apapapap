@@ -12,8 +12,6 @@ import {
 } from "chart.js";
 import mqtt from "mqtt";
 
-import { postData } from "./connection";
-
 // Register the components to ChartJS
 ChartJS.register(
   CategoryScale,
@@ -32,19 +30,8 @@ const LineChart = ({ children }) => {
   const [labels, setLabels] = useState([]);
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    // kaya gini ya man data returnnya jangan diubah ubah
-    postData({
-      "humi": 12.33,
-      "temp": 12.33,
-      "gas": 12.33,
-      "device": 1,
-    })
-  }, [])
-
   const conn = `/ThinkIOT/${children}`;
   useEffect(() => {
-    
     const client = mqtt.connect("wss://test.mosquitto.org:8081");
     client.on("connect", () => {
       console.log("Connected to Mosquitto broker");
