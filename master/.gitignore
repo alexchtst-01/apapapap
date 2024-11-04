@@ -1,1 +1,4 @@
 node_modules
+build/env.js
+public/env.js
+.env
