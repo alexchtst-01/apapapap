@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import morgan from 'morgan'
 
 dotenv.config()
 
@@ -51,6 +52,8 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.send("Hello from backend");
 });
+
+app.use(morgan('dev'));
 
 app.use("/", router);
 

@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import mqtt from "mqtt";
+import { postData } from "./connection";
 
 // Register the components to ChartJS
 ChartJS.register(
@@ -57,15 +58,15 @@ const LineChart = ({ children }) => {
           if (newDataHum.length > 25) {
             newDataHum.shift();
           }
-          return newDataHum
-        })
+          return newDataHum;
+        });
         setGasData((prevData) => {
           const newDataGas = [...prevData, data.Gas];
           if (newDataGas.length > 25) {
             newDataGas.shift();
           }
-          return newDataGas
-        })
+          return newDataGas;
+        });
 
         setLabels((prevLabels) => {
           const newLabels = [...prevLabels, ` ${time}`];
@@ -74,9 +75,24 @@ const LineChart = ({ children }) => {
           }
           return newLabels;
         });
+
+        postData({
+          humi: newDataHum[-1],
+          temp: newDataTemp[-1],
+          gas: newDataGas[-1],
+          device: 1,
+        });
         setTime((prevTime) => prevTime + 1);
       }
     });
+
+    // kedetect ko ini pak
+    // postData({
+    //   humi: 12.20,
+    //   temp: 30.0,
+    //   gas: 10.0,
+    //   device: 1,
+    // });
 
     // Clean up connection on unmount
     return () => {

@@ -1,7 +1,6 @@
 import axios from "axios";
 import env from "react-dotenv";
 
-
 const END_POINT = env.LOCAL_ENDPOINT || env.HOSTED_ENDPOINT;
 
 export const postData = async (data) => {
