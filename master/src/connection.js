@@ -1,7 +1,7 @@
 import axios from "axios";
 import env from "react-dotenv";
 
-const END_POINT = env.LOCAL_ENDPOINT || env.HOSTED_ENDPOINT;
+const END_POINT = env.HOSTED_ENDPOINT;
 axios.defaults.withCredentials = true;
 export const postData = async (data) => {
   console.log(data);
