@@ -27,7 +27,9 @@ ChartJS.register(
 const LineChart = ({area}) => {
   const [temperatureData, setTemperatureData] = useState([]);
   const [humidityData, setHumidityData] = useState([]);
-  const [gasData, setGasData] = useState([]);
+  const [mq2Data, setMq2Data] = useState([]);
+  const [mq3Data, setMq3Data] = useState([]);
+  const [mq135Data, setMq135Data] = useState([]);
   const [labels, setLabels] = useState([]);
   const [time, setTime] = useState(0);
 
@@ -47,39 +49,64 @@ const LineChart = ({area}) => {
     client.on("message", (topic, message) => {
       const data = JSON.parse(message.toString());
       console.log(data);
+    
       if (topic === conn) {
         if (data.Temp) {
-        setTemperatureData((prevData) => {
-          const newDataTemp = [...prevData, data.Temp];
-          if (newDataTemp.length > 25) {
-            newDataTemp.shift();
-          }
-          return newDataTemp;
-        });
+          setTemperatureData((prevData) => {
+            const newDataTemp = [...prevData, data.Temp];
+            if (newDataTemp.length > 25) {
+              newDataTemp.shift();
+            }
+            return newDataTemp;
+          });
         }
+    
         if (data.Hum) {
-        setHumidityData((prevData) => {
-          const newDataHum = [...prevData, data.Hum];
-          if (newDataHum.length > 25) {
-            newDataHum.shift();
-          }
-          return newDataHum;
-        });
+          setHumidityData((prevData) => {
+            const newDataHum = [...prevData, data.Hum];
+            if (newDataHum.length > 25) {
+              newDataHum.shift();
+            }
+            return newDataHum;
+          });
         }
-        if (data.Gas) {
-        setGasData((prevData) => {
-          const newDataGas = [...prevData, data.Gas];
-          if (newDataGas.length > 25) {
-            newDataGas.shift();
-          }
-          return newDataGas;
-        });
+    
+        if (data.MQ2) {
+          setMq2Data((prevData) => {
+            const newDataMq2 = [...prevData, data.MQ2];
+            if (newDataMq2.length > 25) {
+              newDataMq2.shift();
+            }
+            return newDataMq2;
+          });
         }
-
+    
+        if (data.MQ3) {
+          setMq3Data((prevData) => {
+            const newDataMq3 = [...prevData, data.MQ3];
+            if (newDataMq3.length > 25) {
+              newDataMq3.shift();
+            }
+            return newDataMq3;
+          });
+        }
+    
+        if (data.MQ135) {
+          setMq135Data((prevData) => {
+            const newDataMq135 = [...prevData, data.MQ135];
+            if (newDataMq135.length > 25) {
+              newDataMq135.shift();
+            }
+            return newDataMq135;
+          });
+        }
+    
         console.log(`temp: ${data.Temp}`);
         console.log(`hum: ${data.Hum}`);
-        console.log(`gas: ${data.Gas}`);
-
+        console.log(`gas: ${data.MQ2}`);
+        console.log(`gas: ${data.MQ3}`);
+        console.log(`gas: ${data.MQ135}`);
+    
         setLabels((prevLabels) => {
           const newLabels = [...prevLabels, ` ${time}`];
           if (newLabels.length > 7) {
@@ -87,17 +114,21 @@ const LineChart = ({area}) => {
           }
           return newLabels;
         });
-
+    
         postData({
+          id: data.ID,
           humi: data.Hum,
           temp: data.Temp,
-          gas: data.Gas,
-          device: 2,
+          mq2: data.MQ2,
+          mq3: data.MQ3,
+          mq135: data.MQ135,
           region: area,
         });
+    
         setTime((prevTime) => prevTime + 1);
       }
     });
+    
 
     // Clean up connection on unmount
     return () => {
@@ -141,7 +172,7 @@ const LineChart = ({area}) => {
     datasets: [
       {
         label: "Gas",
-        data: gasData,
+        data: [mq2Data, mq3Data, mq135Data],
         fill: true,
         borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
